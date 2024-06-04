@@ -21,7 +21,7 @@ export class EditBlogpostComponent implements OnInit, OnDestroy {
   selectedCategories?: string[];
   updateBlogPostSubscription?: Subscription;
   deleteBlogPostSubscription?: Subscription;
-
+  isImageSelectorVisible : boolean = false;
   constructor(private route: ActivatedRoute, private blogPostService: BlogPostService, private categoryService: CategoryService, 
     private router:Router) { }
 
@@ -81,6 +81,14 @@ export class EditBlogpostComponent implements OnInit, OnDestroy {
         }
       });
     }
+  }
+
+  openImageSelector(): void {
+    this.isImageSelectorVisible = true;
+  }
+
+  closeImageSelector() : void {
+    this.isImageSelectorVisible = false;
   }
 
   ngOnDestroy(): void {
