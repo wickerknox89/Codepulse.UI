@@ -5,13 +5,14 @@ import { Observable } from 'rxjs';
 import { Category } from '../models/category.model';
 import { environment } from 'src/environments/environment';
 import { UpdateCategoryRequest } from '../models/update-category-request.model';
+import { CookieService } from 'ngx-cookie-service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CategoryService {
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private cookieService: CookieService) { }
 
   addCategory(model: AddCategoryRequest): Observable<void>{
     return this.http.post<void>(`${environment.apiBaseUrl}/api/categories`, model);
@@ -26,7 +27,12 @@ export class CategoryService {
   }
 
   updateCategory(id: string, updateCategoryRequest: UpdateCategoryRequest) : Observable<Category> {
-    return this.http.put<Category>(`${environment.apiBaseUrl}/api/categories/${id}`, updateCategoryRequest);
+    return this.http.put<Category>(`${environment.apiBaseUrl}/api/categories/${id}`, 
+      updateCategoryRequest, {
+        headers: {
+          'Authorization' : this.cookieService.get('Authorization')
+        }
+      });
   }
 
   deleteCategory(id: string) : Observable<Category> {
