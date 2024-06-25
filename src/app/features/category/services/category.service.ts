@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AddCategoryRequest } from '../models/add-category-request.model';
 import { Observable } from 'rxjs';
@@ -18,8 +18,13 @@ export class CategoryService {
     return this.http.post<void>(`${environment.apiBaseUrl}/api/categories?addAuth=true`, model);
   }
 
-  getAllCategories(): Observable<Category[]>{
-    return this.http.get<Category[]>(`${environment.apiBaseUrl}/api/categories`);
+  getAllCategories(query?: string): Observable<Category[]>{
+    let params = new HttpParams();
+    if (query) {
+      params = params.set('query', query)
+    }
+
+    return this.http.get<Category[]>(`${environment.apiBaseUrl}/api/categories`, { params: params });
   }
 
   getCategoryById(id: string): Observable<Category> {
